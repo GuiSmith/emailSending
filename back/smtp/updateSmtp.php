@@ -1,6 +1,6 @@
 <?php
 
-    require "conn.php";
+    require "../conn.php";
 
     $data = json_decode(file_get_contents('php://input'),true);
 
@@ -25,10 +25,10 @@
                 // $response['obj'] = $existent_smtp;
             }else{
                 //If e-mail is valid and smtp is not already registered
-                $sql = 'UPDATE smtp SET smtp = :smtp, pass = :pass,sender = :sender WHERE id = :id';
+                $sql = 'UPDATE smtp SET smtp = :smtp, password = :password,sender = :sender WHERE id = :id';
                 $qry = $conn->prepare($sql);
                 $qry->bindParam(':smtp',$data['smtp'],PDO::PARAM_STR);
-                $qry->bindParam(':pass',$data['password'],PDO::PARAM_STR);
+                $qry->bindParam(':password',$data['password'],PDO::PARAM_STR);
                 $qry->bindParam(':sender',$data['sender'],PDO::PARAM_STR);
                 $qry->bindParam(':id',$data['id'],PDO::PARAM_INT);
                 $qry->execute();

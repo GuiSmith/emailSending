@@ -38,6 +38,7 @@ input[name*=id] {
 .grid-table{
     border-collapse: collapse;
     user-select: none;
+    border: solid 1px lightgrey;
 }
 
 .grid-table th {
@@ -48,15 +49,20 @@ input[name*=id] {
 
 .grid-table tr {
     background-color: #f9f9f9;
-    cursor: pointer;
 }
 
 /* Hover effect on rows */
-.grid-table tr:hover {
+.grid-table tr:hover:not(.selected-row){
 background-color: #f2f2f2; /* Darker gray background on hover */
 }
 
 .grid-table td {
     padding: 8px;
     border-top: 1px solid #ddd; /* Top border color */
+    /* cursor: pointer; */
+    border: solid 1px lightgrey;
+}
+
+.grid-table .selected-row {
+    background-color: lightgrey;
 }

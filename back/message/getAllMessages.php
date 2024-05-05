@@ -1,18 +1,18 @@
 <?php
 
-    require "conn.php";
+    require "../conn.php";
 
     try {
-        $sql = 'SELECT id,smtp,sender FROM smtp';
+        $sql = 'SELECT id as ID,name as Nome,smtp_id as SMTP,subject as Assunto,SUBSTRING(content,1,30) as Conteúdo FROM message';
         $qry = $conn->prepare($sql);
         $qry->execute();
         if ($qry->rowCount() > 0) {
             $response['ok'] = true;
-            $response['message'] = 'Dados de SMTP resgatados com sucesso';
+            $response['message'] = 'Dados de mensagens resgatados com sucesso';
             $response['list'] = $qry->fetchAll(PDO::FETCH_OBJ);    
         }else{
             $response['false'] = true;
-            $response['message'] = 'Não há SMTPs cadastrados';
+            $response['message'] = 'Não há mensagens cadastrados';
         }
     } catch (PDOException $error) {
         $response['ok'] = false;

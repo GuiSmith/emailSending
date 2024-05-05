@@ -9,6 +9,7 @@
     </head>
     <body>
         <section>
+            <nav class="navbar"></nav>
             <div class="mb-3">
                 <h2>Gmail SMTP</h2>
                 <h3>Configure seu enviador de e-mail</h3>
@@ -34,13 +35,8 @@
                 <!-- SMTP -->
                 <div class="form-group">
                     <label for = "smtp-input">ID SMTP</label>
-                    <input id = "smtp-input" class="form-control" type = "text" name = "smtp-id" list="smtp-list" required>
-                    <datalist id="smtp-list">
-                        <!--  
-                        <option value="1 - guilhermessmith2014@gmail.com">smtp.gmail.com</option>
-                        <option value="2 - guilherme.rodrigues@ixcsoft.com.br">mail.ixcsoft.com.br</option>
-                        -->
-                    </datalist>
+                    <input id = "smtp-input" class="form-control" type = "text" name = "smtp_id" list="smtp-list" required>
+                    <datalist id="smtp-list"></datalist>
                 </div>
                 <!-- Assunto -->
                 <div class="form-group">

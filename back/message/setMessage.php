@@ -1,7 +1,7 @@
 <?php
 
     //Requires database connection
-    require "conn.php";
+    require "../conn.php";
 
     //Gets data sent as POST
     $data = json_decode(file_get_contents('php://input'),true);

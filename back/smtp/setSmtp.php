@@ -1,7 +1,7 @@
 <?php
 
     //Requires database connection
-    require "conn.php";
+    require "../conn.php";
 
     //Gets data sent as POST
     $data = json_decode(file_get_contents('php://input'),true);
@@ -25,10 +25,10 @@
                 $response['obj'] = $test_qry->fetchAll(PDO::FETCH_OBJ)[0];
             }else{
                 //If it's not already registered and e-mail is valid
-                $sql = 'INSERT INTO smtp (smtp,pass,sender) values (:smtp,:pass,:sender)';
+                $sql = 'INSERT INTO smtp (smtp,password,sender) values (:smtp,:password,:sender)';
                 $qry = $conn->prepare($sql);
                 $qry->bindParam(':smtp',$data['smtp'],PDO::PARAM_STR);
-                $qry->bindParam(':pass',$data['password'],PDO::PARAM_STR);
+                $qry->bindParam(':password',$data['password'],PDO::PARAM_STR);
                 $qry->bindParam(':sender',$data['sender'],PDO::PARAM_STR);
                 $qry->execute();
                 //Gets the ID of the smtp registered

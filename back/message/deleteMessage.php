@@ -1,21 +1,25 @@
 <?php
 
-    require "conn.php";
+    require "../conn.php";
 
     $data = json_decode(file_get_contents('php://input'),true);
 
     try {
-        $sql = 'DELETE FROM smtp WHERE id = :id';
+        $sql = 'DELETE FROM message WHERE id = :id';
         $qry = $conn->prepare($sql);
         $qry->bindParam(':id',$data['id'],PDO::PARAM_INT);
         $qry->execute();
         
         $response['ok'] = true;
-        $response['message'] = "SMTP deletado com sucesso!";
+        $response['message'] = "Mensagem deletada com sucesso!";
     } catch (PDOException $error) {
         $response['ok'] = false;
-        $response['message'] = 'Algo deu errado com a inserção';
-        $response['error'] = $error->getMessage();
+        if ($error->errorInfo[1]==1451) {
+            $response['message'] = 'Há registros criados com esta mensagem';
+        }else{
+            $response['message'] = 'Algo deu errado com a deleção';
+        }        
+        $response['error'] = $error;
     }
 
     header('Content-Type:application/json');

@@ -7,7 +7,6 @@ async function main(){
     const table = createTable(list, headers);
     table.classList.add('grid-table');
     document.querySelector('.table-container').appendChild(table);
-    const tableRows = document.querySelectorAll('table tr:not(:first-child)');
 }
 
-setNavbar(false);
+setNavbar();

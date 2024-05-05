@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 03/04/2024 às 18:36
+-- Tempo de geração: 02/05/2024 às 01:48
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -32,18 +32,9 @@ CREATE TABLE `message` (
   `smtp_id` int(11) DEFAULT NULL,
   `subject` varchar(255) DEFAULT NULL,
   `content` varchar(255) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL
+  `name` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Despejando dados para a tabela `message`
---
-
-INSERT INTO `message` (`id`, `smtp_id`, `subject`, `content`, `name`) VALUES
-(2, 45, 'Assunto', 'Conteúdo', 'Guilherme Smith'),
-(3, 45, 'Assunto', 'Conteúdo', 'Guilherme Smith'),
-(4, 20, 'Assunto de E-mail', 'Conteúdo de e-mail', 'Financeiro Smith'),
-(5, 20, 'teste', 'teste', 'teste');
 
 -- --------------------------------------------------------
 
@@ -54,13 +45,11 @@ INSERT INTO `message` (`id`, `smtp_id`, `subject`, `content`, `name`) VALUES
 CREATE TABLE `smtp` (
   `id` int(11) NOT NULL,
   `smtp` varchar(100) DEFAULT NULL,
-  `pass` varchar(100) DEFAULT NULL,
-  `sender` varchar(100) DEFAULT NULL
+  `password` varchar(100) DEFAULT NULL,
+  `sender` varchar(100) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Despejando dados para a tabela `smtp`
---
 --
 -- Índices para tabelas despejadas
 --
@@ -86,13 +75,13 @@ ALTER TABLE `smtp`
 -- AUTO_INCREMENT de tabela `message`
 --
 ALTER TABLE `message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `smtp`
 --
 ALTER TABLE `smtp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restrições para tabelas despejadas

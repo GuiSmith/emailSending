@@ -9,6 +9,7 @@
     </head>
     <body>
         <section>
+            <nav class="navbar"></nav>
             <div class="mb-3">
                 <h2>Gmail SMTP</h2>
                 <h3>Configure seu enviador de e-mail</h3>
@@ -20,7 +21,7 @@
             </div>
             <form method="POST" action="#" class="form-email" onsubmit="return false">
                 <!-- X Icon -->
-                <img src="../../media/xIcon.png" alt="" width="45">
+                <img src="../../media/xIcon.png" alt="" width="45" onclick = 'window.location.href = "../"'>
                 <!-- ID -->
                 <div class="form-group">
                     <label for="id-input" >ID</label>
@@ -41,7 +42,7 @@
                     <label for="smtp-password-input" >Senha de envio</label>
                     <input type="password" class="form-control" id="smtp-password-input" name="password" required>
                 </div>
-                <div class="feedback-element" style="text-align:right"></div>
+                <div class="feedback-element"></div>
                 <!-- Remetente -->
                 <!--
                 <div class="form-group">
