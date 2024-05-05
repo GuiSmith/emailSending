@@ -54,6 +54,19 @@ export function setFeedback(condition,string){
     }
 }
 
+//Formats dates
+function dateFormat(string){
+    let date = new Date(string);
+    let day = String(date.getDate()).padStart(2, '0'); // Pad with '0' if less than 2 digits
+    let dayWeek = date.getDay();
+    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+    let year = date.getFullYear();
+    let hour = String(date.getHours()).padStart(2, '0'); // Pad with '0' if less than 2 digits
+    let minutes = String(date.getMinutes()).padStart(2, '0'); // Pad with '0' if less than 2 digits
+    let seconds = String(date.getSeconds()).padStart(2, '0'); // Pad with '0' if less than 2 digits
+    return `${day}/${month}/${year} ${hour}:${minutes}:${seconds}`;
+}
+
 //Sets up navbar
 export function setNavbar(){
     document.querySelector('.navbar').innerHTML = `
@@ -64,7 +77,7 @@ export function setNavbar(){
 }
 
 //Creates a table with given list and headers
-export function createTable(list,headers,tableContainerQuery, edit = true){
+export function createTable(list,headers,tableContainerQuery, options = {}){
     if (list) {
         let table = document.createElement('table');
         let header = document.createElement('tr');
@@ -104,14 +117,18 @@ export function createTable(list,headers,tableContainerQuery, edit = true){
                     row.classList.add('selected-row'); //If it isn't, select it
                 }
             });
-            if (edit) { //If editing rows is allowed, configure the edit action
+            if (!options.edit) { //If editing rows is allowed, configure the edit action
                 row.addEventListener('dblclick',() => {
                     window.location.href = `new/index.html?id=${row.id}`; //Edit row if double clicked
-                });   
+                });
             }
             for (let item in obj){ //Creating the rows' elements
                 let td = document.createElement('td');
-                td.textContent = (String(obj[item]).length > 24) ? (String(obj[item]).substring(0,24) + "...") : (String(obj[item]));
+                if (options.dates && options['dates'].includes(item)) {
+                    td.textContent = dateFormat(obj[item]);
+                }else{
+                    td.textContent = (String(obj[item]).length > 24) ? (String(obj[item]).substring(0,24) + "...") : (String(obj[item]));
+                }
                 row.appendChild(td);
             }
             table.appendChild(row);

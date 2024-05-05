@@ -3,7 +3,7 @@
     require "../conn.php";
 
     try {
-        $sql = 'SELECT id,name,smtp_id,subject,SUBSTRING(content,1,30) as content FROM message';
+        $sql = 'SELECT id,name,smtp_id,subject,SUBSTRING(content,1,30) as content, created_at FROM message';
         $qry = $conn->prepare($sql);
         $qry->execute();
         if ($qry->rowCount() > 0) {
