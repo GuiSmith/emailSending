@@ -66,3 +66,9 @@ background-color: #f2f2f2; /* Darker gray background on hover */
 .grid-table .selected-row {
     background-color: lightgrey;
 }
+
+@media only screen and (max-width: 768px) {
+    .form-email {
+        width: 100%;
+    }
+}

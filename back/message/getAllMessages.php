@@ -3,7 +3,7 @@
     require "../conn.php";
 
     try {
-        $sql = 'SELECT id as ID,name as Nome,smtp_id as SMTP,subject as Assunto,SUBSTRING(content,1,30) as Conteúdo FROM message';
+        $sql = 'SELECT id,name,smtp_id,subject,SUBSTRING(content,1,30) as content FROM message';
         $qry = $conn->prepare($sql);
         $qry->execute();
         if ($qry->rowCount() > 0) {
@@ -11,8 +11,8 @@
             $response['message'] = 'Dados de mensagens resgatados com sucesso';
             $response['list'] = $qry->fetchAll(PDO::FETCH_OBJ);    
         }else{
-            $response['false'] = true;
-            $response['message'] = 'Não há mensagens cadastrados';
+            $response['ok'] = false;
+            $response['message'] = 'Não há mensagens cadastradas';
         }
     } catch (PDOException $error) {
         $response['ok'] = false;

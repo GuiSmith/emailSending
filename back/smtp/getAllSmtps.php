@@ -3,7 +3,7 @@
     require "../conn.php";
 
     try {
-        $sql = 'SELECT id as ID,smtp as SMTP,sender as `E-mail de envio` FROM smtp';
+        $sql = 'SELECT id,smtp,sender FROM smtp';
         $qry = $conn->prepare($sql);
         $qry->execute();
         if ($qry->rowCount() > 0) {

@@ -1,4 +1,4 @@
-let absolutePath = location.href.match(/(.*?\/emailSender\/)/)[1];
+let absolutePath = location.href.match(/(.*?\/emailsender\/)/)[1];
 let feedbackElementClass = 'feedback-element';
 
 //Fills elements' value with given object's properties
@@ -64,74 +64,115 @@ export function setNavbar(){
 }
 
 //Creates a table with given list and headers
-export function createTable(list){
-    let table = document.createElement('table');
-    let header = document.createElement('tr');
-    //Adiciona header na tabela
-    table.appendChild(header);
-    /*
-    //Defines header of the table as an array passed as an argument (headers).
-    //Removed because headers are renamed when selecting in the database
-    headers.forEach((headerItem) => {
-        let th = document.createElement('th');
-        th.textContent = headerItem;
-        header.appendChild(th);
-    });
-    */
-    //Defines headers of the table as the property's name
-    Object.keys(list[0]).forEach((item) => {
-        let cell = document.createElement('th');
-        cell.textContent = item;
-        header.appendChild(cell);
-    });
-    //Fills up table
-    list.forEach((obj) => {
-        let row = document.createElement('tr');
-        row.id = obj.ID;
-        row.addEventListener('click', (event) => {
-            if (Array.from(row.classList).includes('selected-row')) { //Checks if the row clicked is already selected
-                if (event.shiftKey) {
-                    row.classList.remove('selected-row'); //If it is, unselect it
+export function createTable(list,headers,tableContainerQuery, edit = true){
+    if (list) {
+        let table = document.createElement('table');
+        let header = document.createElement('tr');
+        let tableContainer = document.querySelector(tableContainerQuery).appendChild(table);
+        table.classList.add('grid-table');
+        table.appendChild(header);
+        //Defines header of the table as an array passed as an argument (headers).
+        //Removed because headers are renamed when selecting in the database
+        headers.forEach((headerItem) => {
+            let th = document.createElement('th');
+            th.textContent = headerItem;
+            header.appendChild(th);
+        });
+        /*
+        //Defines headers of the table as the property's name
+        Object.keys(list[0]).forEach((item) => {
+            let cell = document.createElement('th');
+            cell.textContent = item;
+            header.appendChild(cell);
+        });
+        */
+        //Fills up table
+        list.forEach((obj) => {
+            let row = document.createElement('tr');
+            row.id = obj.id; //Passing down the object's ID as the row ID, makes it easier to configure buttons based on selected rows
+            row.addEventListener('click', (event) => {
+                if (Array.from(row.classList).includes('selected-row')) { //Checks if the row clicked is already selected
+                    if (event.shiftKey) {
+                        row.classList.remove('selected-row'); //If it is, unselect it
+                    }else{
+                        resetSelected();
+                    }
                 }else{
-                    resetSelected();
+                    if (!event.shiftKey) { //Checks if shift key is being pressed
+                        resetSelected();
+                    }
+                    row.classList.add('selected-row'); //If it isn't, select it
                 }
-            }else{
-                if (!event.shiftKey) { //Checks if shift key is being pressed
-                    resetSelected();
-                }
-                row.classList.add('selected-row'); //If it isn't, select it
+            });
+            if (edit) { //If editing rows is allowed, configure the edit action
+                row.addEventListener('dblclick',() => {
+                    window.location.href = `new/index.html?id=${row.id}`; //Edit row if double clicked
+                });   
             }
-        });
-        row.addEventListener('dblclick',() => {
-            window.location.href = `new/index.html?id=${row.id}`; //Edit row if double clicked
-        });
-        for (let item in obj){
-            let td = document.createElement('td');
-            td.textContent = (String(obj[item]).length > 24) ? (String(obj[item]).substring(0,24) + "...") : (String(obj[item]));
-            // td.textContent = String(obj[item]).substring(0,24) + () ? () : ();
-            row.appendChild(td);
-        }
-        table.appendChild(row);
-    });
-    //Format edit button
-    try {
-        document.querySelector('.edit-button').addEventListener('click', () => {
-            let selectedRows = getSelectedRows();
-            if (selectedRows.length > 1) { //Checks if more than one row is selected
-                setFeedback(false,'Não é possível editar diversos itens!');
-            }else{
-                if (selectedRows.length == 0) {
-                    setFeedback(false,'Selecione um item para editar!');
-                }else{
-                    window.location.href = `new/index.html?id=${selectedRows[0].id}`;
-                    // console.log(selectedRows[0].id);
-                }
+            for (let item in obj){ //Creating the rows' elements
+                let td = document.createElement('td');
+                td.textContent = (String(obj[item]).length > 24) ? (String(obj[item]).substring(0,24) + "...") : (String(obj[item]));
+                row.appendChild(td);
             }
+            table.appendChild(row);
         });
-    } catch (error) {
-        console.log(error);
+    }else{
+        console.log(`list given has no registers`);
+        // console.log(list);
+        setFeedback(false,'0 registros');
     }
-    return table;
+}
+
+//Buttons configuration
+export function setButtons(obj){
+    try {
+        if (obj.edit) { //Allows editing
+            document.querySelector('.edit-button').addEventListener('click', () => {
+                let selectedRows = getSelectedRows();
+                if (selectedRows.length > 1) { //Checks if more than one row is selected
+                    setFeedback(false,'Não é possível editar diversos itens!');
+                }else{
+                    if (selectedRows.length == 0) {
+                        setFeedback(false,'Selecione um item para editar!');
+                    }else{
+                        window.location.href = `new/index.html?id=${selectedRows[0].id}`;
+                    }
+                }
+            });
+        }
+        if (obj.delete) { //Allows deleting
+            document.querySelector('.delete-button').addEventListener('click', () => {
+                let selectedRows = getSelectedRows();
+                if (selectedRows.length == 0) {
+                    setFeedback(false,'Selecione um item para deletar!');
+                }else{
+                    if (confirm('Tem certeza de que deseja deletar os itens selecionados?')) {
+                        selectedRows.forEach((row) => {
+                            obj.delete(row.id);
+                        });
+                    }
+                    window.location.reload();
+                }
+            });
+        }
+        if (obj.duplicate) {
+            document.querySelector('.duplicate-button').addEventListener('click', () => {
+                let selectedRows = getSelectedRows();
+                if (selectedRows.length > 1) { //Checks if more than one row is selected
+                    setFeedback(false,'Não é possível duplicar diversos itens!');
+                }else{
+                    if (selectedRows.length == 0) {
+                        setFeedback(false,'Selecione um item para duplicar!');
+                    }else{
+                        obj.duplicate(selectedRows[0].id);
+                    }
+                }
+            });
+        }
+        
+    } catch (error) {
+        console.log(`Error configuring buttons ${error}`);
+    }
 }
 
 //Reset selected rows
@@ -327,30 +368,36 @@ export async function getAllMessages(){
             }
         });
         response = await response.json();
-        console.log(response.list);
+        // console.log(response.list);
         return response.list;
     } catch (error) {
         console.error(`Ops, erro ao processar: ${error}`);
     }
 }
 
-//Deletes an Message
+//Deletes a Message
 export async function deleteMessage(id){
-    if (confirm('Tem certeza de que deseja deletar a mensagem?')) {
-        let obj = {
-            id: id
-        };
-        let response = await fetch(`${absolutePath}back/message/deleteMessage.php`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obj)
-        });
-        response = await response.json();
-        setFeedback(response.ok,'Mensagem deletada com sucesso');
-        setTimeout(() => {
-            window.location.href = '../';
-        },300);  
+    let obj = {
+        id: id
+    };
+    let response = await fetch(`${absolutePath}back/message/deleteMessage.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(obj)
+    });
+    response = await response.json();
+    setFeedback(response.ok,response.message);
+    return response.ok;
+}
+
+//Duplicates a message
+export async function duplicateMessage(){
+    let newId = await setMessage();
+    if (newId != 0) { //If it's different from zero, then the duplicate was created;
+        window.location.href = `index.html?id=${newId}`;
+    }else{
+        setFeedback(false,'Ocorreu um erro ao duplicar mensagem!');
     }
 }

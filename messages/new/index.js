@@ -1,6 +1,6 @@
-import {setNavbar,getURLid, getMessage, setMessage, updateMessage, deleteMessage, fillInputs, setFeedback, setListOptions, getAllSmtps} from '../../functions.js';
+import {setNavbar,getURLid, getMessage, setMessage, updateMessage, deleteMessage, duplicateMessage, fillInputs, setFeedback, setListOptions, getAllSmtps} from '../../functions.js';
 const idInput = document.querySelector('input[name=id]'); 
-let saveButton = document.querySelector('#save-button');
+let saveButton = document.querySelector('.save-button');
 
 setNavbar();
 updateForm();
@@ -17,10 +17,19 @@ async function updateForm(lastInsertId = null){
         let messageData = await getMessage(lastInsertId); //Gets smtp with informed ID
         fillInputs(messageData);
         //Sets up delete button
-        document.querySelector('#delete-button').addEventListener('click', async () => {await deleteMessage(lastInsertId)});
+        document.querySelector('.delete-button').addEventListener('click', async () => {
+            if (confirm('Tem certeza de que deseja deletar a mensagem?')) { //Waits confirmations for deleting
+                if (await deleteMessage(lastInsertId)) { //If message is deleted, redirects user to message grid
+                    setTimeout(() => {
+                        window.location.href = '../';
+                    },300);
+                }
+            }
+        });
         //Sets up update button
         saveButton.addEventListener('click',updateMessage);
-
+        //Sets up duplicate button
+        document.querySelector('.duplicate-button').addEventListener('click', duplicateMessage);;
     }else{
         //New Message
         saveButton.addEventListener('click', async () => {
