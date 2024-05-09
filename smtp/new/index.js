@@ -13,7 +13,7 @@ async function updateForm(lastInsertId = null){
     //If last insert ID isn't null
     if (lastInsertId != null) {
         let smtpData = await getSmtp(lastInsertId); //Gets smtp with informed ID
-        fillInputs(smtpData);
+        fillInputs(smtpData,{dates:['created_at']});
         //Sets up delete button
         document.querySelector('#delete-button').addEventListener('click', async () => {await deleteSmtp(lastInsertId)});
         //Sets up update button

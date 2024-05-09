@@ -3,7 +3,7 @@ import {setNavbar ,getAllMessages, createTable, deleteMessage, setButtons} from 
 main();
 async function main(){
     const list = await getAllMessages();
-    const headers = ['ID','Remetente','SMTP','Assunto', 'Texto','Criado em'];
+    const headers = ['ID','Remetente','SMTP','Assunto', 'Texto','Data cadastro'];
     createTable(list, headers, '.table-container',{dates:['created_at']});
     setButtons({
         edit: true,

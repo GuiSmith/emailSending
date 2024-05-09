@@ -3,10 +3,14 @@ let feedbackElementClass = 'feedback-element';
 
 //Fills elements' value with given object's properties
 //Object property name and element name attribute must match
-export function fillInputs(obj){
+export function fillInputs(obj, options = {}){
     for (let item in obj) {
         try {
-            document.querySelector(`[name=${item}]`).value=obj[item];    
+            if (options.dates && options['dates'].includes(item)) {
+                document.querySelector(`[name=${item}]`).value=dateFormat(obj[item]);
+            }else{
+                document.querySelector(`[name=${item}]`).value=obj[item];
+            }
         } catch (error) {
             
         }
