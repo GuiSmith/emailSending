@@ -6,15 +6,36 @@ let feedbackElementClass = 'feedback-element';
 export function fillInputs(obj, options = {}){
     for (let item in obj) {
         try {
+            let input = document.querySelector(`[name=${item}]`);
             if (options.dates && options['dates'].includes(item)) {
-                document.querySelector(`[name=${item}]`).value=dateFormat(obj[item]);
+                input.value=dateFormat(obj[item]);
             }else{
-                document.querySelector(`[name=${item}]`).value=obj[item];
+                if (input.id == 'summernote') {
+                    $('#summernote').summernote('code', obj[item]);
+                }else{
+                    input.value=obj[item];
+                }
             }
         } catch (error) {
             
         }
     }
+}
+
+//Sets summernote's config
+export function setSummernote(){
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            placeholder: 'Digite aqui...',
+            height: 300,
+            callbacks: {
+            onInit: function() {
+                    // Find the Summernote container and set its background color
+                    $('.note-editor').css('background-color', 'white');
+                }
+            }
+        });
+    });  
 }
 
 //Returns an object of input values

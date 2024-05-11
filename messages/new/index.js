@@ -1,9 +1,6 @@
-import {setNavbar,getURLid, getMessage, setMessage, updateMessage, deleteMessage, duplicateMessage, fillInputs, setFeedback, setListOptions, getAllSmtps} from '../../functions.js';
+import {setNavbar,getURLid, getMessage, setMessage, updateMessage, deleteMessage, duplicateMessage, fillInputs, setFeedback, setListOptions, getAllSmtps, setSummernote} from '../../functions.js';
 const idInput = document.querySelector('input[name=id]'); 
 let saveButton = document.querySelector('.save-button');
-
-setNavbar();
-updateForm();
 
 async function updateForm(lastInsertId = null){
 
@@ -16,6 +13,7 @@ async function updateForm(lastInsertId = null){
     if (lastInsertId != null) {
         let messageData = await getMessage(lastInsertId); //Gets smtp with informed ID
         fillInputs(messageData,{dates:['created_at']});
+        console.log(messageData);
         //Sets up delete button
         document.querySelector('.delete-button').addEventListener('click', async () => {
             if (confirm('Tem certeza de que deseja deletar a mensagem?')) { //Waits confirmations for deleting
@@ -43,3 +41,7 @@ async function updateForm(lastInsertId = null){
         console.log('Não atualizado pois ID não foi informado');
     }
 }
+
+setNavbar();
+updateForm();
+setSummernote();
