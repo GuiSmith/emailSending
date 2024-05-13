@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Linux (x86_64)
 --
--- Host: localhost    Database: emailsending
+-- Host: localhost    Database: emailsender
 -- ------------------------------------------------------
 -- Server version	8.0.36-2ubuntu3
 
@@ -16,6 +16,26 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `email`
+--
+
+DROP TABLE IF EXISTS `email`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `email` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `smtp_id` int NOT NULL,
+  `message_id` int DEFAULT NULL,
+  `subject` varchar(255) NOT NULL,
+  `content` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `sent_at` datetime DEFAULT NULL,
+  `address` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `message`
 --
 
@@ -25,13 +45,14 @@ DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message` (
   `id` int NOT NULL AUTO_INCREMENT,
   `smtp_id` int DEFAULT NULL,
-  `subject` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `content` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `smtp_id` (`smtp_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,10 +64,11 @@ DROP TABLE IF EXISTS `smtp`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `smtp` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `smtp` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `password` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `sender` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `smtp` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `sender` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -60,4 +82,4 @@ CREATE TABLE `smtp` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-05  4:32:50
+-- Dump completed on 2024-05-12 21:09:43

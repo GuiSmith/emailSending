@@ -81,15 +81,19 @@ export function setFeedback(condition,string){
 
 //Formats dates
 function dateFormat(string){
-    let date = new Date(string);
-    let day = String(date.getDate()).padStart(2, '0'); // Pad with '0' if less than 2 digits
-    let dayWeek = date.getDay();
-    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
-    let year = date.getFullYear();
-    let hour = String(date.getHours()).padStart(2, '0'); // Pad with '0' if less than 2 digits
-    let minutes = String(date.getMinutes()).padStart(2, '0'); // Pad with '0' if less than 2 digits
-    let seconds = String(date.getSeconds()).padStart(2, '0'); // Pad with '0' if less than 2 digits
-    return `${day}/${month}/${year} ${hour}:${minutes}:${seconds}`;
+    if (string == null) {
+        return "";
+    }else{
+        let date = new Date(string);
+        let day = String(date.getDate()).padStart(2, '0'); // Pad with '0' if less than 2 digits
+        let dayWeek = date.getDay();
+        let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+        let year = date.getFullYear();
+        let hour = String(date.getHours()).padStart(2, '0'); // Pad with '0' if less than 2 digits
+        let minutes = String(date.getMinutes()).padStart(2, '0'); // Pad with '0' if less than 2 digits
+        let seconds = String(date.getSeconds()).padStart(2, '0'); // Pad with '0' if less than 2 digits
+        return `${day}/${month}/${year} ${hour}:${minutes}:${seconds}`;
+    }
 }
 
 //Sets up navbar
@@ -98,6 +102,7 @@ export function setNavbar(){
         <a href="${absolutePath}">Home</a>
         <a href="${absolutePath}smtp/">SMTP</a>
         <a href="${absolutePath}messages/">Mensagens</a>
+        <a href="${absolutePath}email/">Enviar</a>
     `;
 }
 

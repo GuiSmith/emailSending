@@ -6,7 +6,7 @@
 
     try {
         if ($data['id'] > 0 && is_numeric($data['id'])) {
-            $sql = 'SELECT id,smtp,sender,password,created_at FROM smtp WHERE id = :id';
+            $sql = 'SELECT * FROM smtp WHERE id = :id';
             $qry = $conn->prepare($sql);
             $qry->bindParam(':id',$data['id'],PDO::PARAM_INT);
             $qry->execute();
