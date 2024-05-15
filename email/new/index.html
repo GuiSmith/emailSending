@@ -23,6 +23,7 @@
             <div class="mb-3">
                 <button class="btn btn-secondary new-button" onclick = 'window.location.href = "index.html"'>Novo</button>
                 <button class="btn btn-secondary save-button">Salvar</button>
+                <button class="btn btn-secondary duplicate-button">Duplicar</button>
                 <button class="btn btn-success send-button">Enviar</button>
                 <button class="btn btn-danger delete-button">Deletar</button>
             </div>
@@ -39,6 +40,16 @@
                     <label for = "smtp-input">ID SMTP</label>
                     <input id = "smtp-input" class="form-control" type = "text" name = "smtp_id" list="smtp-list" required>
                     <datalist id="smtp-list"></datalist>
+                </div>
+                <!-- E-mail de envio -->
+                <div class="form-group">
+                    <label for = "sender-input">E-mail de envio</label>
+                    <input id = "sender-input" class="form-control" type = "text" name = "sender" required disabled>
+                </div>
+                <!-- Destinatário -->
+                <div class="form-group">
+                    <label for = "address-input" >Destinatário</label>
+                    <input id="address-input" class="form-control" name = "address"></input>
                 </div>
                 <!-- Mensagem -->
                 <div class="form-group">

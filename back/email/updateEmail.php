@@ -13,6 +13,7 @@
         $qry->bindParam(':message_id',$data['message_id'],PDO::PARAM_INT);
         $qry->bindParam(':subject',$data['subject'],PDO::PARAM_STR);
         $qry->bindParam(':content',$data['content'],PDO::PARAM_STR);
+        $qry->bindParam(':address',$data['address'],PDO::PARAM_STR);
         $qry->bindParam(':id',$data['id'],PDO::PARAM_INT);
         $qry->execute();
         //Gets the ID of the smtp registered

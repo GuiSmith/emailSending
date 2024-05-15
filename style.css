@@ -67,6 +67,10 @@ background-color: #f2f2f2; /* Darker gray background on hover */
     background-color: lightgrey;
 }
 
+.table-container {
+    overflow: auto;
+}
+
 @media only screen and (max-width: 768px) {
     .form-email {
         width: 100%;

@@ -1,9 +1,14 @@
 let absolutePath = location.href.match(/(.*?\/emailsender\/)/)[1];
 let feedbackElementClass = 'feedback-element';
 
+//Sets summernote content
+export function setSummernoteContent(string){
+    $('#summernote').summernote('code', string);
+}
+
 //Fills elements' value with given object's properties
 //Object property name and element name attribute must match
-export function fillInputs(obj, options = {}){
+export async function fillInputs(obj, options = {}){
     for (let item in obj) {
         try {
             let input = document.querySelector(`[name=${item}]`);
@@ -11,7 +16,7 @@ export function fillInputs(obj, options = {}){
                 input.value=dateFormat(obj[item]);
             }else{
                 if (input.id == 'summernote') {
-                    $('#summernote').summernote('code', obj[item]);
+                   await setSummernoteContent(obj[item]);
                 }else{
                     input.value=obj[item];
                 }
@@ -42,7 +47,12 @@ export function setSummernote(){
 function createObj(array){
     let obj = {};
     array.forEach((property) => {
-        obj[property] = document.querySelector(`[name=${property}]`).value;
+        try {
+            obj[property] = document.querySelector(`[name=${property}]`).value;
+        } catch (error) {
+            console.log(`Erro com a propriedade ${property}`);
+            console.log(error);
+        }
     });
     return obj;
 }
@@ -73,7 +83,7 @@ export function setFeedback(condition,string){
         }else{
             feedbackElement.style.color = 'red';
         }
-        feedbackElement.textContent = string;   
+        feedbackElement.textContent = string;  
     } catch (error) {
         console.log(error);
     }
@@ -202,7 +212,7 @@ export function setButtons(obj){
                 }
             });
         }
-        if (obj.duplicate) {
+        if (obj.duplicate) { //Allows duplicating
             document.querySelector('.duplicate-button').addEventListener('click', () => {
                 let selectedRows = getSelectedRows();
                 if (selectedRows.length > 1) { //Checks if more than one row is selected
@@ -219,6 +229,7 @@ export function setButtons(obj){
         
     } catch (error) {
         console.log(`Error configuring buttons ${error}`);
+        console.log(obj);
     }
 }
 
@@ -446,5 +457,97 @@ export async function duplicateMessage(){
         window.location.href = `index.html?id=${newId}`;
     }else{
         setFeedback(false,'Ocorreu um erro ao duplicar mensagem!');
+    }
+}
+
+//Creates an email
+export async function setEmail(){
+//Gets message data
+    let emailObj = createObj(['smtp_id','message_id','subject','content','address']);
+    //Faz a requisição para o banco de dados
+    let response = await fetch(`${absolutePath}back/email/setEmail.php`,{
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(emailObj)
+    });
+    response = await response.json();
+    setFeedback(response.ok,response.message);
+    if (response.ok) {
+        return response.id['LAST_INSERT_ID()'];
+    }else{
+        console.log(response);
+        return 0;
+    }
+}
+
+//Gets an email
+export async function getEmail(id){
+    let response = await fetch(`${absolutePath}back/email/getEmail.php?id=${id}`);
+    response = await response.json();
+    if (response.ok) {
+        return response.obj;
+    }else{
+        console.log(response.message);
+        setFeedback(response.ok,response.message);
+        return null;
+    }
+}
+
+//Deletes an email
+export async function deleteEmail(id){
+    let response = await fetch(`${absolutePath}back/email/deleteEmail.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id:id})
+    });
+    response = await response.json();
+    setFeedback(response.ok,response.message);
+    return response.ok;
+}
+
+//Updates an email
+export async function updateEmail(){
+    //Gets message data
+    let obj = createObj(['id','smtp_id','message_id','subject','content','address']);
+    //Faz a requisição para o banco de dados
+    let response = await fetch(`${absolutePath}back/email/updateEmail.php`,{
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(obj)
+    });
+    response = await response.json();
+    setFeedback(response.ok,response.message);
+}
+
+//Duplicates an email
+export async function duplicateEmail(){
+    let newId = await setEmail();
+    if (newId != 0) { //If it's different from zero, then the duplicate was created;
+        window.location.href = `index.html?id=${newId}`;
+    }else{
+        setFeedback(false,'Ocorreu um erro ao duplicar mensagem!');
+    }
+} 
+
+//Gets all emails
+export async function getAllEmails(){
+    try {
+        let response = await fetch(`${absolutePath}back/email/getAllEmails.php`, {
+            method: 'GET',
+            headers: {
+                'Content-Type':'application/json'
+            }
+        });
+        response = await response.json();
+        // console.log(response.list);
+        return response.list;
+    } catch (error) {
+        console.error(`Ops, erro ao processar: ${error}`);
     }
 }
