@@ -41,7 +41,6 @@ CREATE TABLE `email` (
 
 LOCK TABLES `email` WRITE;
 /*!40000 ALTER TABLE `email` DISABLE KEYS */;
-INSERT INTO `email` VALUES (1,1,1,'oio','eie','2024-05-14 19:23:41',NULL,'guilhermessmith2014@gmail.com'),(3,1,2,'Implantação IXC Provedor-  IXC Soft','<p>Olá, venho por este informar que o processo de pós implantação da empresa NORD TELECOM foi finalizado.</p><p>Aguarde instruções</p>','2024-05-14 21:33:05',NULL,'guilhermessmith2014@gmail.com'),(7,1,16,'Assunto','<h1 style=\"text-align: center;\"><span style=\"font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Título</span></h1>','2024-05-14 21:35:29',NULL,'asd');
 /*!40000 ALTER TABLE `email` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -71,7 +70,6 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (1,1,'Teste','Corpo do e-mai','Guilherme Smith','2024-05-05 01:37:18','2024-05-11 16:06:20'),(2,2,'Implantação IXC Provedor-  IXC Soft','<p>Olá, venho por este informar que o processo de pós implantação da empresa NORD TELECOM foi finalizado.</p><p>Aguarde instruções</p>','Guilherme Smith','2024-05-05 01:51:59',NULL),(16,1,'Assunto','texto','Adalberto','2024-05-08 11:07:49',NULL),(18,1,'Assunto','texto','Adalberto','2024-05-09 20:44:50',NULL);
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,7 +97,6 @@ CREATE TABLE `smtp` (
 
 LOCK TABLES `smtp` WRITE;
 /*!40000 ALTER TABLE `smtp` DISABLE KEYS */;
-INSERT INTO `smtp` VALUES (1,'smtp.gmail.com','tzwl wgpz neez pzvf','guilhermessmith2014@gmail.com','2024-05-05 01:17:25','2024-05-11 16:10:05');
 /*!40000 ALTER TABLE `smtp` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
